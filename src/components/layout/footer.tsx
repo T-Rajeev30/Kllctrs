@@ -4,7 +4,6 @@ import Link from "next/link";
 import { Container } from "@/components/layout/container";
 import { motion } from "framer-motion";
 import {
-  Sparkles,
   Map,
   Store,
   Trophy,
@@ -12,7 +11,7 @@ import {
   MessageSquare,
   Mail,
 } from "lucide-react";
-
+import Image from "next/image";
 export function Footer() {
   return (
     <footer className="relative border-t border-purple-500/20 bg-gradient-to-b from-[#050008] via-[#0b0014] to-[#020004] text-purple-200 overflow-hidden">
@@ -29,9 +28,15 @@ export function Footer() {
             <div className="flex items-center gap-2 mb-4">
               <motion.div
                 whileHover={{ rotate: 10, scale: 1.1 }}
-                className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-500 via-violet-600 to-fuchsia-600 shadow-[0_0_25px_rgba(168,85,247,0.6)] flex items-center justify-center"
+                className="relative w-10 h-10 rounded-xl overflow-hidden "
               >
-                <Sparkles className="w-5 h-5 text-white" />
+                <Image
+                  src="/Gem_pink.png"
+                  alt="KLLCTRS AI"
+                  fill
+                  className="object-contain p-1"
+                  priority
+                />
               </motion.div>
 
               <span className="font-black text-lg text-white tracking-wide drop-shadow-[0_0_8px_rgba(168,85,247,0.6)]">
