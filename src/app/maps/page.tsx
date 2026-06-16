@@ -1,0 +1,47 @@
+import { createClient } from "@/lib/supabase/server";
+import MapsClient from "@/components/maps/MapsClient";
+
+export default async function MapsPage() {
+  const supabase = await createClient();
+
+  const { data: events } = await supabase
+    .from("events")
+    .select("*")
+    .eq("status", "approved");
+
+  const { data: shops } = await supabase
+    .from("shops")
+    .select("*")
+    .eq("status", "approved");
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  let savedEventIds: string[] = [];
+  let savedShopIds: string[] = [];
+
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("saved_events,saved_shops")
+      .eq("id", user.id)
+      .single();
+
+    savedEventIds = profile?.saved_events ?? [];
+    savedShopIds = profile?.saved_shops ?? [];
+  }
+  console.log("EVENTS:", events?.length);
+  console.log("SHOPS:", shops?.length);
+  console.log("SAVED EVENTS:", savedEventIds.length);
+  console.log("SAVED SHOPS:", savedShopIds.length);
+
+  return (
+    <MapsClient
+      events={events ?? []}
+      shops={shops ?? []}
+      savedEventIds={savedEventIds}
+      savedShopIds={savedShopIds}
+    />
+  );
+}

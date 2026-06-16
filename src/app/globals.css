@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@plugin "@tailwindcss/typography";
+
+.shop-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+
+.shop-scrollbar::-webkit-scrollbar-track {
+  background: #bdbcbe;
+  border-radius: 10px;
+}
+
+.shop-scrollbar::-webkit-scrollbar-thumb {
+  background: #8b5cf6;
+  border-radius: 10px;
+}
+
+.shop-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #8b5cf6 #bdbcbe;
+}

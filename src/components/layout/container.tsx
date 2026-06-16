@@ -1,0 +1,12 @@
+type ContainerProps = {
+  children: React.ReactNode;
+  className?: string;
+};
+
+export function Container({ children, className = "" }: ContainerProps) {
+  return (
+    <div className={"mx-auto w-full max-w-6xl px-6 py-20 " + className}>
+      {children}
+    </div>
+  );
+}

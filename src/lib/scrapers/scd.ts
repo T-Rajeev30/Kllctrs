@@ -1,0 +1,1 @@
+// Sports Collectors Digest scraper
