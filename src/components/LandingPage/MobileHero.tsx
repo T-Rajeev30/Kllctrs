@@ -23,7 +23,7 @@ export default function MobileHero() {
           alt="Hobby Map"
           fill
           priority
-          sizes="100vw"
+          sizes="(max-width: 640px) 100vw, 576px"
           className="object-contain"
         />
       </div>

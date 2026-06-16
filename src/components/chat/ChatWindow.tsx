@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { MessageSquare, X, Send, Sparkles } from "lucide-react";
+import { X, Send, Sparkles } from "lucide-react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Message {
@@ -87,35 +88,62 @@ export default function ChatWindow() {
       {/* Floating button */}
       <motion.button
         onClick={() => setOpen((o) => !o)}
-        whileHover={{ scale: 1.05 }}
+        whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full text-white shadow-2xl shadow-violet-500/30 flex items-center justify-center"
-        style={{ background: "linear-gradient(135deg, #5f2eea, #a855f7)" }}
+        className="group fixed bottom-6 right-6 z-50 w-16 h-16 cursor-pointer"
         aria-label="Open chat"
       >
-        <AnimatePresence mode="wait">
-          {open ? (
-            <motion.div
-              key="x"
-              initial={{ rotate: -90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 90, opacity: 0 }}
-              transition={{ duration: 0.15 }}
-            >
-              <X className="w-6 h-6" />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="chat"
-              initial={{ rotate: 90, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: -90, opacity: 0 }}
-              transition={{ duration: 0.15 }}
-            >
-              <MessageSquare className="w-6 h-6" />
-            </motion.div>
+        <div className="relative w-full h-full">
+          {/* Closed Crystal */}
+          <Image
+            src="/Chat/chat_icon_closed.png"
+            alt="Chat"
+            fill
+            priority
+            className="
+        absolute
+        inset-0
+        object-contain
+        transition-all
+        duration-500
+        ease-out
+        group-hover:opacity-0
+        group-hover:scale-75
+        group-hover:-rotate-12
+      "
+          />
+
+          {/* Open Crystal */}
+          <Image
+            src="/Chat/chat_icon_open.png"
+            alt="Chat"
+            fill
+            priority
+            className="
+        absolute
+        inset-0
+        object-contain
+        opacity-0
+        scale-125
+        rotate-12
+        transition-all
+        duration-500
+        ease-out
+        group-hover:opacity-100
+        group-hover:scale-100
+        group-hover:rotate-0
+      "
+          />
+
+          {/* Close icon when chat is open */}
+          {open && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="rounded-full bg-black/40 p-2 backdrop-blur-sm">
+                <X className="w-5 h-5 text-white" />
+              </div>
+            </div>
           )}
-        </AnimatePresence>
+        </div>
       </motion.button>
 
       {/* Chat panel */}
@@ -130,8 +158,13 @@ export default function ChatWindow() {
           >
             {/* Header */}
             <div className="px-4 py-3 border-b border-violet-100 bg-gradient-to-r from-violet-50 to-fuchsia-50 flex items-center gap-3 shrink-0">
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#5f2eea] to-[#4a1fa8] flex items-center justify-center shrink-0 shadow-md shadow-violet-500/20">
-                <Sparkles className="w-4 h-4 text-white" />
+              <div className="relative w-8 h-8 rounded-xl overflow-hidden shrink-0 shadow-md shadow-violet-500/20">
+                <Image
+                  src="/Gem_Pink.png"
+                  alt="KLLCTRS AI"
+                  fill
+                  className="object-contain"
+                />
               </div>
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-black text-[#1a0a3d]">
