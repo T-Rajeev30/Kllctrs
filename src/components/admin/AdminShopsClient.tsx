@@ -190,11 +190,19 @@ export default function AdminShopsClient({
                 {/* Actions */}
                 <div className="flex flex-wrap gap-2 shrink-0">
                   <Link
+                    href={`/admin/shop/${shop.id}`}
+                    className="h-9 px-3 rounded-xl border border-blue-200 text-blue-600 text-xs font-bold inline-flex items-center gap-1.5 hover:bg-blue-50 transition-colors"
+                  >
+                    Edit
+                  </Link>
+
+                  <Link
                     href={`/shops/${shop.slug}`}
                     target="_blank"
                     className="h-9 px-3 rounded-xl border border-violet-200 text-xs font-bold text-[#4a3f6b]/60 inline-flex items-center gap-1.5 hover:bg-violet-50 transition-colors"
                   >
-                    <ExternalLink className="w-3 h-3" /> Preview
+                    <ExternalLink className="w-3 h-3" />
+                    Preview
                   </Link>
 
                   {currentStatus !== "approved" && (

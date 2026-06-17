@@ -39,7 +39,6 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL('/login?redirect=/admin', request.url))
       
     }
-    console.log("PROXY USER:", user?.email);
 
 const { data: profile } = await supabase
   .from("profiles")
@@ -47,7 +46,7 @@ const { data: profile } = await supabase
   .eq("id", user.id)
   .single();
 
-console.log("PROXY PROFILE:", profile);
+
     // const { data: profile } = await supabase
     //   .from('profiles')
     //   .select('role')

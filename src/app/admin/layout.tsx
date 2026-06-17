@@ -23,6 +23,11 @@ const NAV = [
   { href: "/admin/blog", label: "Blog", icon: FileText },
   { href: "/admin/users", label: "Users", icon: Users },
   { href: "/admin/scraper", label: "Scraper", icon: Rss },
+  {
+    href: "/admin/shop-manager",
+    label: "Shop Manager",
+    icon: Store,
+  },
 ];
 
 export default async function AdminLayout({
