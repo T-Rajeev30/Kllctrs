@@ -23,9 +23,7 @@ export default function AvatarUploader({
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
-
     if (!file) return;
-
     onFileSelect?.(file);
   }
 
@@ -41,76 +39,65 @@ export default function AvatarUploader({
         onChange={handleChange}
       />
 
+      {/* Card face — foil-edge frame, the product's own card metaphor applied to the avatar */}
       <button
         type="button"
         onClick={handleClick}
+        aria-label="Change profile photo"
         className="
           group
           relative
-          h-32
-          w-32
+          h-40
+          w-40
           overflow-hidden
-          rounded-full
-          border-4
-          border-white
-          bg-zinc-100
-          shadow-xl
-          transition-transform
+          rounded-[28px]
+          bg-gradient-to-br
+          from-white/10
+          to-white/[0.02]
+          p-[2px]
+          shadow-[0_8px_40px_-8px_rgba(232,184,92,0.25)]
+          transition-all
           duration-300
-          hover:scale-[1.03]
+          hover:shadow-[0_12px_48px_-8px_rgba(232,184,92,0.4)]
+          focus-visible:outline
+          focus-visible:outline-2
+          focus-visible:outline-offset-2
+          focus-visible:outline-[#E8B85C]
         "
+        style={{
+          backgroundImage:
+            "linear-gradient(135deg, rgba(232,184,92,0.7), rgba(232,184,92,0.15) 40%, rgba(232,184,92,0.5))",
+        }}
       >
-        {imageSrc ? (
-          <Image
-            src={imageSrc}
-            alt="Profile Avatar"
-            fill
-            sizes="128px"
-            className="object-cover"
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <User className="h-12 w-12 text-zinc-400" />
+        <div className="relative h-full w-full overflow-hidden rounded-[26px] bg-gradient-to-br from-[#241452] to-[#150B30]">
+          {imageSrc ? (
+            <Image
+              src={imageSrc}
+              alt="Profile avatar"
+              fill
+              sizes="160px"
+              className="object-cover"
+            />
+          ) : (
+            <div className="flex h-full w-full items-center justify-center">
+              <User className="h-12 w-12 text-white/30" />
+            </div>
+          )}
+
+          {/* Hover overlay */}
+          <div
+            className="
+              absolute inset-0
+              flex items-center justify-center
+              bg-[#150B30]/60
+              opacity-0
+              transition-opacity
+              duration-300
+              group-hover:opacity-100
+            "
+          >
+            <Camera className="h-7 w-7 text-white" strokeWidth={1.75} />
           </div>
-        )}
-
-        {/* Overlay */}
-
-        <div
-          className="
-            absolute
-            inset-0
-            flex
-            items-center
-            justify-center
-            bg-black/40
-            opacity-0
-            transition-opacity
-            duration-300
-            group-hover:opacity-100
-          "
-        >
-          <Camera className="h-8 w-8 text-white" />
-        </div>
-
-        {/* Camera Button */}
-
-        <div
-          className="
-            absolute
-            bottom-2
-            right-2
-            flex
-            h-9
-            w-9
-            items-center
-            justify-center
-            rounded-full
-            bg-[#6D3DF5]
-            shadow-lg
-          "
-        >
-          <Camera className="h-4 w-4 text-white" />
         </div>
       </button>
 
@@ -119,21 +106,21 @@ export default function AvatarUploader({
         onClick={handleClick}
         className="
           mt-4
-          rounded-xl
-          bg-violet-100
-          px-4
-          py-2
           text-sm
           font-medium
-          text-violet-700
+          text-white/70
+          underline-offset-4
           transition
-          hover:bg-violet-200
+          hover:text-white
+          hover:underline
         "
       >
-        Change Photo
+        Change photo
       </button>
 
-      <p className="mt-2 text-xs text-zinc-500">PNG, JPG or WEBP</p>
+      <p className="mt-1 text-[11px] tracking-wide text-white/35">
+        PNG, JPG or WEBP
+      </p>
     </div>
   );
 }

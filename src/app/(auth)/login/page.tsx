@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { motion } from "framer-motion";
-import { Sparkles, Loader2, TriangleAlert } from "lucide-react";
-
+import { Loader2, TriangleAlert } from "lucide-react";
+import Image from "next/image";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -49,11 +49,17 @@ function LoginForm() {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative z-10 w-full max-w-sm"
+      className="relative z-10 w-full max-w-sm px-1 sm:px-0"
     >
-      <div className="flex items-center justify-center gap-2.5 mb-8">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#5f2eea] to-[#4a1fa8] flex items-center justify-center shadow-lg shadow-violet-500/25">
-          <Sparkles className="w-5 h-5 text-white" />
+      <div className="flex items-center justify-center gap-2 mb-6 sm:mb-8">
+        <div className="w-10 h-10 rounded-xl overflow-hidden">
+          <Image
+            src="/Gem_Pink.png"
+            alt="Logo"
+            width={24}
+            height={24}
+            className="object-contain"
+          />
         </div>
         <span className="font-black text-xl tracking-tighter text-[#1a0a3d]">
           KLLCTRS
@@ -62,7 +68,7 @@ function LoginForm() {
 
       <div className="rounded-2xl border border-violet-100 bg-white/80 backdrop-blur-sm shadow-xl shadow-violet-200/30 p-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-black text-[#1a0a3d] tracking-tight mb-1">
+          <h1 className="text-xl sm:text-2xl font-black text-[#1a0a3d] tracking-tight mb-1">
             Welcome back
           </h1>
           <p className="text-sm text-[#4a3f6b]/60">
@@ -70,7 +76,7 @@ function LoginForm() {
           </p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-3 sm:space-y-4">
           <div>
             <label className={labelClass}>Email</label>
             <input
@@ -138,8 +144,8 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f4f3fb] via-[#ede9ff] to-[#f4f3fb] flex items-center justify-center px-4">
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[10%] right-[15%] w-[500px] h-[500px] bg-violet-200/40 rounded-full blur-[150px]" />
-        <div className="absolute bottom-[20%] left-[10%] w-[400px] h-[400px] bg-fuchsia-200/30 rounded-full blur-[120px]" />
+        <div className="absolute top-[10%] right-[15%] w-[250px] h-[250px] sm:w-[500px] sm:h-[500px] bg-violet-200/40 rounded-full blur-[80px] sm:blur-[150px]" />
+        <div className="absolute bottom-[20%] left-[10%] w-[200px] h-[200px] sm:w-[400px] sm:h-[400px] bg-fuchsia-200/30 rounded-full blur-[60px] sm:blur-[120px]" />
       </div>
       <Suspense
         fallback={

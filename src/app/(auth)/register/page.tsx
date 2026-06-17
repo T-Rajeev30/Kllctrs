@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { motion } from "framer-motion";
 import { Sparkles, Loader2, TriangleAlert } from "lucide-react";
+import Image from "next/image";
 
 function RegisterForm() {
   const router = useRouter();
@@ -40,6 +41,20 @@ function RegisterForm() {
     }
 
     // If session exists, user is logged in — redirect to profile
+    if (data.user) {
+      const { error: profileError } = await supabase.from("profiles").insert({
+        id: data.user.id,
+        email: data.user.email,
+      });
+
+      if (profileError) {
+        console.error("Profile creation error:", profileError);
+        setError("Failed to create profile");
+        setLoading(false);
+        return;
+      }
+    }
+
     if (data.session) {
       router.push("/profile");
       router.refresh();
@@ -55,9 +70,9 @@ function RegisterForm() {
   const labelClass = "text-xs font-medium text-[#4a3f6b]/60 block mb-1.5";
 
   return (
-    <div className="rounded-2xl border border-violet-100 bg-white/80 backdrop-blur-sm shadow-xl shadow-violet-200/30 p-8">
+    <div className="rounded-2xl border border-violet-100 bg-white/80 backdrop-blur-sm shadow-xl shadow-violet-200/30 p-5 sm:p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-black text-[#1a0a3d] tracking-tight mb-1">
+        <h1 className="text-xl sm:text-2xl font-black text-[#1a0a3d] tracking-tight mb-1">
           Create account
         </h1>
         <p className="text-sm text-[#4a3f6b]/60">
@@ -65,7 +80,7 @@ function RegisterForm() {
         </p>
       </div>
 
-      <form onSubmit={handleSignup} className="space-y-4">
+      <form onSubmit={handleSignup} className="space-y-3 sm:space-y-4">
         <div>
           <label className={labelClass}>Email</label>
           <input
@@ -135,11 +150,17 @@ export default function RegisterPage() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="relative z-10 w-full max-w-sm"
+          className="relative z-10 w-full max-w-sm px-1 sm:px-0"
         >
           <div className="flex items-center justify-center gap-2.5 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#5f2eea] to-[#4a1fa8] flex items-center justify-center shadow-lg shadow-violet-500/25">
-              <Sparkles className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-xl overflow-hidden">
+              <Image
+                src="/Gem_Pink.png"
+                alt="Logo"
+                width={24}
+                height={24}
+                className="object-contain"
+              />
             </div>
             <span className="font-black text-xl tracking-tighter text-[#1a0a3d]">
               KLLCTRS

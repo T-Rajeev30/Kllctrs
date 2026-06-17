@@ -22,7 +22,7 @@ export default async function ProfilePage() {
     .from("profiles")
     .select("*")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
 
   if (error) {
     console.error(error);
@@ -51,6 +51,7 @@ export default async function ProfilePage() {
     savedEventIds.length > 0
       ? await supabase.from("events").select("*").in("id", savedEventIds)
       : { data: [] };
+
   return (
     <ProfileClient
       user={user}

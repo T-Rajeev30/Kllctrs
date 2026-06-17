@@ -100,6 +100,7 @@ export default function ChatWindow() {
             alt="Chat"
             fill
             priority
+            sizes="(max-width: 768px) 48px, 64px"
             className="
         absolute
         inset-0
@@ -119,6 +120,7 @@ export default function ChatWindow() {
             alt="Chat"
             fill
             priority
+            sizes="(max-width: 768px) 48px, 64px"
             className="
         absolute
         inset-0
@@ -163,6 +165,7 @@ export default function ChatWindow() {
                   src="/Gem_Pink.png"
                   alt="KLLCTRS AI"
                   fill
+                  sizes="40px"
                   className="object-contain"
                 />
               </div>
