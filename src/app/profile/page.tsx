@@ -28,6 +28,7 @@ export default async function ProfilePage() {
     console.error(error);
   }
 
+  const isAdmin = profile?.role === "admin";
   // Fetch saved shops
   let savedShops: any[] = [];
 

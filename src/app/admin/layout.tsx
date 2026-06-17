@@ -37,11 +37,15 @@ export default async function AdminLayout({
 
   if (!user) redirect("/login?redirect=/admin");
 
-  const { data: adminUser } = await supabaseAdmin.auth.admin.getUserById(
-    user.id,
-  );
-  const isAdmin = adminUser?.user?.app_metadata?.role === "admin";
-  if (!isAdmin) redirect("/");
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (profile?.role !== "admin") {
+    redirect("/");
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f4f3fb] via-[#ede9ff] to-[#f4f3fb]">

@@ -13,9 +13,34 @@ import {
   MousePointerClick,
 } from "lucide-react";
 
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 export const metadata = { title: "Admin Dashboard | KLLCTRS" };
 
 export default async function AdminOverviewPage() {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role,email")
+    .eq("id", user.id)
+    .single();
+
+  // console.log("USER:", user.email);
+  // console.log("PROFILE:", profile);
+  // console.log("ROLE:", profile?.role);
+
+  // if (profile?.role !== "admin") {
+  //   redirect("/");
+  // }
   const [
     eventsApproved,
     eventsPending,
