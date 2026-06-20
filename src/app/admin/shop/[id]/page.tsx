@@ -42,6 +42,7 @@ import { supabaseAdmin } from "@/lib/supabase/admin";
 import { notFound } from "next/navigation";
 import AdminShopEditClient from "@/components/admin/AdminShopEditClient";
 
+export const dynamic = "force-dynamic";
 export default async function Page({
   params,
 }: {
@@ -61,7 +62,21 @@ export default async function Page({
   console.log("SHOP:", shop);
   console.log("ERROR:", error);
 
-  if (!shop) notFound();
+  if (!shop) {
+    return (
+      <pre>
+        {JSON.stringify(
+          {
+            id,
+            error,
+            shop,
+          },
+          null,
+          2,
+        )}
+      </pre>
+    );
+  }
 
   return <AdminShopEditClient shop={shop} />;
 }
