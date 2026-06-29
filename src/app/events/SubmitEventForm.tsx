@@ -394,9 +394,18 @@ export default function SubmitEventForm({
       )}
 
       <div className="flex items-center gap-3 flex-wrap">
-        <button type="submit" disabled={loading} className="...">
-          loading ? mode === "edit" ? "Saving..." : "Submitting..." : mode ===
-          "edit" ? "Save Changes" : "Submit for Review"
+        <button
+          type="submit"
+          disabled={loading}
+          className="h-10 px-6 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
+        >
+          {loading
+            ? mode === "edit"
+              ? "Saving..."
+              : "Submitting..."
+            : mode === "edit"
+              ? "Save Changes"
+              : "Submit for Review"}
         </button>
         <p className="text-xs text-muted-foreground">
           Reviewed within 48 hours. You&apos;ll get an email when approved.
