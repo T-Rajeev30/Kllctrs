@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import slugify from "slugify";
+import type { Event } from "@/types";
 
 const US_STATES = [
   "AL",
@@ -57,28 +58,44 @@ const US_STATES = [
   "WY",
 ];
 
-export default function SubmitEventForm() {
+interface SubmitEventFormProps {
+  mode?: "create" | "edit";
+  eventId?: string;
+  initialValues?: Partial<Event>;
+}
+export default function SubmitEventForm({
+  mode,
+  eventId,
+  initialValues,
+}: SubmitEventFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
   const [form, setForm] = useState({
-    name: "",
-    date_start: "",
-    date_end: "",
-    city: "",
-    state: "",
-    venue_name: "",
-    venue_address: "",
-    zip_code: "",
-    website: "",
-    venue_website: "",
-    vendor_tables: "",
-    contact_name: "",
-    contact_phone: "",
-    contact_email: "",
-    autograph_guests: "",
+    name: initialValues?.name ?? "",
+    description: initialValues?.description ?? "",
+    date_start: initialValues?.date_start ?? "",
+    date_end: initialValues?.date_end ?? "",
+
+    city: initialValues?.city ?? "",
+    state: initialValues?.state ?? "",
+
+    venue_name: initialValues?.venue_name ?? "",
+    venue_address: initialValues?.venue_address ?? "",
+    zip_code: initialValues?.zip_code ?? "",
+
+    website: initialValues?.website ?? "",
+    venue_website: initialValues?.venue_website ?? "",
+
+    vendor_tables: initialValues?.vendor_tables?.toString() ?? "",
+
+    contact_name: initialValues?.contact_name ?? "",
+    contact_phone: initialValues?.contact_phone ?? "",
+    contact_email: initialValues?.contact_email ?? "",
+
+    autograph_guests: initialValues?.autograph_guests ?? "",
   });
 
   const handleChange = (
@@ -102,15 +119,23 @@ export default function SubmitEventForm() {
     const payload = {
       ...form,
       slug,
+      description: form.description,
       vendor_tables: form.vendor_tables
         ? parseInt(form.vendor_tables, 10)
         : null,
       date_end: form.date_end || null,
     };
 
-    const res = await fetch("/api/events", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const endpoint =
+      mode === "edit" ? `/api/admin/events/${eventId}` : "/api/events";
+
+    const method = mode === "edit" ? "PATCH" : "POST";
+
+    const res = await fetch(endpoint, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(payload),
     });
 
@@ -123,6 +148,12 @@ export default function SubmitEventForm() {
     }
 
     setSuccess(true);
+
+    if (mode === "edit") {
+      router.refresh();
+      return;
+    }
+
     setTimeout(() => router.push("/dashboard"), 2500);
   };
 
@@ -130,10 +161,13 @@ export default function SubmitEventForm() {
     return (
       <div className="rounded-xl border border-border p-8 text-center">
         <div className="text-3xl mb-3">✓</div>
-        <h2 className="text-xl font-medium mb-2">Submission received</h2>
+        <h2 className="text-xl font-medium mb-2">
+          {mode === "edit" ? "Changes Saved" : "Submission Received"}
+        </h2>
         <p className="text-sm text-muted-foreground">
-          Your show is in our review queue. You&apos;ll see it on the map once
-          approved (usually within 48 hours).
+          {mode === "edit"
+            ? "The event has been updated successfully."
+            : "Your show is in our review queue. You'll see it on the map once approved (usually within 48 hours)."}
         </p>
       </div>
     );
@@ -159,6 +193,18 @@ export default function SubmitEventForm() {
             onChange={handleChange}
             className={inputClass}
             placeholder="e.g. Dallas Card Show 2026"
+          />
+        </div>
+        <div>
+          <label className={labelClass}>Description</label>
+
+          <textarea
+            name="description"
+            rows={5}
+            value={form.description}
+            onChange={handleChange}
+            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+            placeholder="Event description..."
           />
         </div>
 
@@ -348,12 +394,9 @@ export default function SubmitEventForm() {
       )}
 
       <div className="flex items-center gap-3 flex-wrap">
-        <button
-          type="submit"
-          disabled={loading}
-          className="h-10 px-6 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
-        >
-          {loading ? "Submitting..." : "Submit for review"}
+        <button type="submit" disabled={loading} className="...">
+          loading ? mode === "edit" ? "Saving..." : "Submitting..." : mode ===
+          "edit" ? "Save Changes" : "Submit for Review"
         </button>
         <p className="text-xs text-muted-foreground">
           Reviewed within 48 hours. You&apos;ll get an email when approved.

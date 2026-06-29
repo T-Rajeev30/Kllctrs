@@ -155,25 +155,19 @@ export class ImporterService {
     }
 
     catch (error) {
-
-      return {
-
-        success: false,
-
-        imported: false,
-
-        duplicate: false,
-
-        message:
-          "Import failed.",
-
-        event,
-
-        error,
-
-      };
-
-    }
+ 
+  return {
+    success: false,
+    imported: false,
+    duplicate: false,
+    message:
+      error instanceof Error
+        ? error.message
+        : String(error),
+    event,
+    error,
+  };
+}
 
   }
 

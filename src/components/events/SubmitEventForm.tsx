@@ -57,28 +57,40 @@ const US_STATES = [
   "WY",
 ];
 
-export default function SubmitEventForm() {
+import type { Event } from "@/types";
+
+interface SubmitEventFormProps {
+  mode?: "create" | "edit";
+  eventId?: string;
+  initialValues?: Partial<Event>;
+}
+
+export default function SubmitEventForm({
+  mode = "create",
+  eventId,
+  initialValues,
+}: SubmitEventFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
   const [form, setForm] = useState({
-    name: "",
-    date_start: "",
-    date_end: "",
-    city: "",
-    state: "",
-    venue_name: "",
-    venue_address: "",
-    zip_code: "",
-    website: "",
-    venue_website: "",
-    vendor_tables: "",
-    contact_name: "",
-    contact_phone: "",
-    contact_email: "",
-    autograph_guests: "",
+    name: initialValues?.name ?? "",
+    date_start: initialValues?.date_start ?? "",
+    date_end: initialValues?.date_end ?? "",
+    city: initialValues?.city ?? "",
+    state: initialValues?.state ?? "",
+    venue_name: initialValues?.venue_name ?? "",
+    venue_address: initialValues?.venue_address ?? "",
+    zip_code: initialValues?.zip_code ?? "",
+    website: initialValues?.website ?? "",
+    venue_website: initialValues?.venue_website ?? "",
+    vendor_tables: initialValues?.vendor_tables?.toString() ?? "",
+    contact_name: initialValues?.contact_name ?? "",
+    contact_phone: initialValues?.contact_phone ?? "",
+    contact_email: initialValues?.contact_email ?? "",
+    autograph_guests: initialValues?.autograph_guests ?? "",
   });
 
   const handleChange = (
@@ -108,9 +120,16 @@ export default function SubmitEventForm() {
       date_end: form.date_end || null,
     };
 
-    const res = await fetch("/api/events", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const endpoint =
+      mode === "edit" ? `/api/admin/events/${eventId}` : "/api/events";
+
+    const method = mode === "edit" ? "PATCH" : "POST";
+
+    const res = await fetch(endpoint, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(payload),
     });
 
@@ -123,6 +142,12 @@ export default function SubmitEventForm() {
     }
 
     setSuccess(true);
+
+    if (mode === "edit") {
+      router.refresh();
+      return;
+    }
+
     setTimeout(() => router.push("/dashboard"), 2500);
   };
 
@@ -130,10 +155,14 @@ export default function SubmitEventForm() {
     return (
       <div className="rounded-xl border border-border p-8 text-center">
         <div className="text-3xl mb-3">✓</div>
-        <h2 className="text-xl font-medium mb-2">Submission received</h2>
+        <h2 className="text-xl font-medium mb-2">
+          {" "}
+          {mode === "edit" ? "Changes saved" : "Submission received"}
+        </h2>
         <p className="text-sm text-muted-foreground">
-          Your show is in our review queue. You&apos;ll see it on the map once
-          approved (usually within 48 hours).
+          {mode === "edit"
+            ? "The event has been updated successfully."
+            : "Your show is in our review queue..."}
         </p>
       </div>
     );
@@ -353,7 +382,13 @@ export default function SubmitEventForm() {
           disabled={loading}
           className="h-10 px-6 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-50"
         >
-          {loading ? "Submitting..." : "Submit for review"}
+          {loading
+            ? mode === "edit"
+              ? "Saving..."
+              : "Submitting..."
+            : mode === "edit"
+              ? "Save Changes"
+              : "Submit for Review"}
         </button>
         <p className="text-xs text-muted-foreground">
           Reviewed within 48 hours. You&apos;ll get an email when approved.

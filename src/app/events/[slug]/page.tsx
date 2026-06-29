@@ -35,13 +35,17 @@ export default async function EventDetailPage({ params }: Params) {
   const { slug } = await params;
   const supabase = await createClient();
 
-  const { data: event } = await supabase
+  const { data: events, error } = await supabase
     .from("events")
     .select("*")
     .eq("slug", slug)
-    .eq("status", "approved")
-    .single();
+    .order("date_start", { ascending: false });
 
+  if (error || !events || events.length === 0) {
+    notFound();
+  }
+
+  const event = events[0];
   if (!event) notFound();
 
   const {

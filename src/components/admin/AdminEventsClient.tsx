@@ -187,11 +187,11 @@ export default function AdminEventsClient({
                 {/* Actions */}
                 <div className="flex flex-wrap gap-2 shrink-0">
                   <Link
-                    href={`/events/${event.slug}`}
+                    href={`/admin/events/${event.id}/edit`}
                     target="_blank"
                     className="h-9 px-3 rounded-xl border border-violet-200 text-xs font-bold text-[#4a3f6b]/60 inline-flex items-center gap-1.5 hover:bg-violet-50 transition-colors"
                   >
-                    <ExternalLink className="w-3 h-3" /> Preview
+                    <ExternalLink className="w-3 h-3" /> Review
                   </Link>
 
                   {currentStatus !== "approved" && (

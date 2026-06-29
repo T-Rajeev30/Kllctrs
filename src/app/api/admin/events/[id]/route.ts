@@ -18,11 +18,46 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
   if (!auth.ok) return NextResponse.json({ error: auth.error }, { status: auth.status })
 
   const { id } = await params
-  const body = await request.json()
-  const update: Record<string, unknown> = {}
-  if (body.status && ['pending', 'approved', 'rejected'].includes(body.status)) {
-    update.status = body.status
+ const body = await request.json();
+
+const update: Record<string, unknown> = {
+  name: body.name,
+  description: body.description,
+  slug: body.slug,
+  date_start: body.date_start,
+  date_end: body.date_end,
+
+  city: body.city,
+  state: body.state,
+
+  venue_name: body.venue_name,
+  venue_address: body.venue_address,
+  zip_code: body.zip_code,
+
+  website: body.website,
+  venue_website: body.venue_website,
+
+  vendor_tables: body.vendor_tables,
+
+  contact_name: body.contact_name,
+  contact_phone: body.contact_phone,
+  contact_email: body.contact_email,
+
+  autograph_guests: body.autograph_guests,
+};
+
+if (
+  body.status &&
+  ["pending", "approved", "rejected"].includes(body.status)
+) {
+  update.status = body.status;
+}
+
+Object.keys(update).forEach((key) => {
+  if (update[key] === undefined) {
+    delete update[key];
   }
+});
   if (Object.keys(update).length === 0) {
     return NextResponse.json({ error: 'Nothing to update' }, { status: 400 })
   }
