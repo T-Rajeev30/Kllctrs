@@ -353,7 +353,7 @@ export default async function EventDetailPage({ params }: Params) {
               Looking for more shows?
             </p>
             <Link
-              href="/events"
+              href="/maps"
               className="text-sm text-primary hover:underline font-medium"
             >
               Browse all card shows →

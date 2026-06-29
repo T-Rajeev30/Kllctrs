@@ -12,17 +12,28 @@ import {
   Newspaper,
   Shield,
   Rss,
+  Upload,
 } from "lucide-react";
 
 const NAV = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
+
   { href: "/admin/events", label: "Events", icon: CalendarDays },
+
+  {
+    href: "/admin/events/import",
+    label: "Import Events",
+    icon: Upload,
+  },
+
   { href: "/admin/shop", label: "Shops", icon: Store },
+
   { href: "/admin/sponsors", label: "Sponsors", icon: Trophy },
-  { href: "/admin/content", label: "Content", icon: Newspaper },
+
   { href: "/admin/blog", label: "Blog", icon: FileText },
+
   { href: "/admin/users", label: "Users", icon: Users },
-  { href: "/admin/scraper", label: "Scraper", icon: Rss },
+
   {
     href: "/admin/shop-manager",
     label: "Shop Manager",
