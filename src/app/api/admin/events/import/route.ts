@@ -4,6 +4,9 @@ import { createImportPipeline } from "@/lib/tcdb/factory/create-import-pipeline"
 import { parseEventDetail } from "@/lib/tcdb/parser/detail-parser";
 import { createClient } from "@/lib/supabase/server";
 
+import { SportsCollectorDigestScraper } from "@/lib/tcdb/services/sports-collector-digest-scrapper";
+import { normalizeSportsEvents }
+from "../../../../../lib/tcdb/parser/sports-calender-normalizer";
 export async function POST(
   request: NextRequest
 ) {
@@ -58,6 +61,61 @@ if (
 
     const formData =
       await request.formData();
+
+    const provider =
+  (formData.get("provider") as string) ??
+  "tcdb";
+
+  console.log("Provider:", provider);
+
+  //------------------------------------------------
+// Sports Collector Digest Import
+//------------------------------------------------
+
+if (provider === "sportscollectorsdigest") {
+
+    const scraper =
+        new SportsCollectorDigestScraper();
+
+    const scrapeResult =
+        await scraper.scrape();
+
+    console.log(
+        "Scraped:",
+        scrapeResult.events.length
+    );
+
+    const databaseEvents =
+        scrapeResult.events;
+
+    console.log(
+        "Database Events:",
+        databaseEvents.length
+    );
+
+    const pipeline =
+        createImportPipeline();
+
+    const report =
+        await pipeline.importDatabaseEvents(
+            databaseEvents
+        );
+
+    return NextResponse.json({
+
+        success: true,
+
+        provider,
+
+        total: databaseEvents.length,
+
+        report,
+
+    });
+
+}
+
+
 
     //------------------------------------------------
     // Calendar HTML

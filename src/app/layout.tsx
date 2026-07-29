@@ -6,7 +6,7 @@ import ChatWindow from "@/components/chat/ChatWindow";
 import CookieBanner from "@/components/layout/CookieBanner";
 
 import { Toaster } from "sonner";
-
+import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { Space_Grotesk, Inter, Unica_One } from "next/font/google";
 
 const spaceGrotesk = Space_Grotesk({
@@ -53,6 +53,7 @@ export default function RootLayout({
         <CookieBanner />
 
         {/* SONNER TOASTS */}
+        <AnalyticsTracker />
 
         <Toaster
           position="top-center"

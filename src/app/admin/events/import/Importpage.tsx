@@ -14,6 +14,9 @@ import ImportReport from "./ImportReport";
 
 export default function EventImportPage() {
   const [calendarFile, setCalendarFile] = useState<File | null>(null);
+  const [provider, setProvider] = useState<"tcdb" | "sportscollectorsdigest">(
+    "tcdb",
+  );
   const [events, setEvents] = useState<ParsedCalendarEvent[]>([]);
 
   const [detailFiles, setDetailFiles] = useState<File[]>([]);
@@ -46,12 +49,54 @@ export default function EventImportPage() {
     },
     [],
   );
+  const handleImported = useCallback((report: BatchImportSummary) => {
+    setReport(report);
+  }, []);
 
   return (
     <div className="container mx-auto max-w-7xl space-y-8 px-6 py-8">
       <ImportHeader />
 
-      <UrlGenerator />
+      <div className="rounded-lg border p-4">
+        <h3 className="mb-4 text-lg font-semibold">Event Provider</h3>
+
+        <div className="flex gap-6">
+          <label className="flex items-center gap-2">
+            <input
+              type="radio"
+              checked={provider === "tcdb"}
+              onChange={() => setProvider("tcdb")}
+            />
+            TCDB Parser
+          </label>
+
+          <label className="flex items-center gap-2">
+            <input
+              type="radio"
+              checked={provider === "sportscollectorsdigest"}
+              onChange={() => setProvider("sportscollectorsdigest")}
+            />
+            Sports Collector Digest Scraper
+          </label>
+        </div>
+      </div>
+
+      {provider === "tcdb" && (
+        <>
+          <UrlGenerator />
+
+          <CalendarUploader onParsed={handleCalendarParsed} />
+
+          <EventPreview events={events} detailPages={detailPages} />
+
+          <DetailUploader
+            detailPages={detailPages}
+            onUploaded={handleDetailUploaded}
+          />
+        </>
+      )}
+
+      {/* <UrlGenerator />
 
       <CalendarUploader onParsed={handleCalendarParsed} />
 
@@ -60,14 +105,26 @@ export default function EventImportPage() {
       <DetailUploader
         detailPages={detailPages}
         onUploaded={handleDetailUploaded}
-      />
+      /> */}
+
+      {provider === "sportscollectorsdigest" && (
+        <div className="rounded-lg border p-6">
+          <h2 className="text-lg font-semibold">Sports Collector Digest</h2>
+
+          <p className="mt-2 text-sm text-muted-foreground">
+            Events will be scraped directly from the website. No calendar HTML
+            or detail pages are required.
+          </p>
+        </div>
+      )}
 
       <ImportControlPanel
+        provider={provider}
         calendarFile={calendarFile}
         detailFiles={detailFiles}
         events={events}
         detailPages={detailPages}
-        onImported={setReport}
+        onImported={handleImported}
       />
 
       <ImportReport report={report} />

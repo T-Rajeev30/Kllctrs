@@ -15,7 +15,7 @@ export interface DatabaseEvent {
   /**
    * Source Tracking
    */
-  source_provider: "tcdb";
+  source_provider:"tcdb" | "sportscollectorsdigest";
 
   source_event_id: string;
 

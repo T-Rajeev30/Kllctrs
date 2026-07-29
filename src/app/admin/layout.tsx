@@ -13,12 +13,27 @@ import {
   Shield,
   Rss,
   Upload,
+  BarChart3,
 } from "lucide-react";
 
 const NAV = [
-  { href: "/admin", label: "Overview", icon: LayoutDashboard },
+  {
+    href: "/admin",
+    label: "Overview",
+    icon: LayoutDashboard,
+  },
 
-  { href: "/admin/events", label: "Events", icon: CalendarDays },
+  {
+    href: "/admin/analytics",
+    label: "Analytics",
+    icon: BarChart3,
+  },
+
+  {
+    href: "/admin/events",
+    label: "Events",
+    icon: CalendarDays,
+  },
 
   {
     href: "/admin/events/import",
@@ -26,13 +41,29 @@ const NAV = [
     icon: Upload,
   },
 
-  { href: "/admin/shop", label: "Shops", icon: Store },
+  {
+    href: "/admin/shop",
+    label: "Shops",
+    icon: Store,
+  },
 
-  { href: "/admin/sponsors", label: "Sponsors", icon: Trophy },
+  {
+    href: "/admin/sponsors",
+    label: "Sponsors",
+    icon: Trophy,
+  },
 
-  { href: "/admin/blog", label: "Blog", icon: FileText },
+  {
+    href: "/admin/blog",
+    label: "Blog",
+    icon: FileText,
+  },
 
-  { href: "/admin/users", label: "Users", icon: Users },
+  {
+    href: "/admin/users",
+    label: "Users",
+    icon: Users,
+  },
 
   {
     href: "/admin/shop-manager",

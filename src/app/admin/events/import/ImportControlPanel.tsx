@@ -14,7 +14,10 @@ import type { UploadedDetailPage } from "./DetailUploader";
 import type { BatchImportSummary } from "@/lib/tcdb/services/batch-importer";
 
 interface Props {
+  provider: "tcdb" | "sportscollectorsdigest";
+
   calendarFile: File | null;
+
   detailFiles: File[];
 
   events: ParsedCalendarEvent[];
@@ -25,6 +28,7 @@ interface Props {
 }
 
 export default function ImportControlPanel({
+  provider,
   calendarFile,
   detailFiles,
   events,
@@ -41,11 +45,12 @@ export default function ImportControlPanel({
     return events.filter((event) => !detailPages[event.eventId]);
   }, [events, detailPages]);
 
-  //------------------------------------------
+  //-----------------------------------------
 
   const ready =
-    events.length > 0 && missing.length === 0 && calendarFile !== null;
-
+    provider === "tcdb"
+      ? events.length > 0 && missing.length === 0 && calendarFile !== null
+      : true;
   //------------------------------------------
 
   async function importEvents() {
@@ -60,14 +65,18 @@ export default function ImportControlPanel({
       // Calendar
       //--------------------------------------
 
-      formData.append("calendar", calendarFile!);
+      formData.append("provider", provider);
 
       //--------------------------------------
       // Details
       //--------------------------------------
 
-      for (const file of detailFiles) {
-        formData.append("details", file);
+      if (provider === "tcdb") {
+        formData.append("calendar", calendarFile!);
+
+        for (const file of detailFiles) {
+          formData.append("details", file);
+        }
       }
 
       //--------------------------------------

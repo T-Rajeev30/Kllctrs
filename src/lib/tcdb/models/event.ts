@@ -1,6 +1,8 @@
 export interface EventSource {
 
-    provider: "tcdb";
+    provider:
+    | "tcdb"
+    | "sportscollectorsdigest";
 
     sourceId: string;
 

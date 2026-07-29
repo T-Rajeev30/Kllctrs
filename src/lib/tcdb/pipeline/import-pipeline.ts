@@ -44,6 +44,11 @@ export class ImportPipeline {
     private readonly batchImporter: BatchImporterService
 
   ) {}
+  async importDatabaseEvents(
+  events: DatabaseEvent[]
+) {
+  return this.batchImporter.import(events);
+}
 
   async execute(
 
